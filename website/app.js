@@ -13,7 +13,8 @@ function performAction(){
   GetWeather(ZipCode)
   .then(function(data){
 console.log(data);
-postData('/addUserComment', {City : data.name , temp : data.temp , feeling : userFeeling})
+postData('http://127.0.0.1:8000/addUserComment', {City : data.name , temp : data.temp , feeling : userFeeling})
+updateUI();
   })
 }
 //https://samples.openweathermap.org/data/2.5/find?q=London&units=imperial&appid=439d4b804bc8187953eb36d2a8c26a02
@@ -33,7 +34,8 @@ const GetWeather = async(zipcode) => {
     return newData;
   }
   catch(exception){
-    console.log(`an error has been occured => ${exception}`)
+    console.log(`an error has been occured => ${exception}`);
+    alert("Please enter right zip code !!");
   }
 }
 // Create a new date instance dynamically with JS
@@ -62,7 +64,18 @@ const postData = async ( url = '', data = {})=>{
     // appropriately handle the error
     }
 }
-
+const updateUI = async() => {
+  const request = await fetch('http://127.0.0.1:8000/all')
+  try {
+    const allData = await request.json();
+    console.log(allData);
+    document.getElementById('date').innerHTML = "Date : " + newDate;
+    document.getElementById('temp').innerHTML = "Temperature : " +allData.temp + "°C";
+    document.getElementById('content').innerHTML = "Your Feelings : " + allData.feeling;
+  } catch(error){
+    console.log( `error : ${error}`)
+  }
+}
 // TODO-Call Function
 /*
 postData('/addUserComment',{name : "bird"})*/

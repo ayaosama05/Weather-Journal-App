@@ -5,6 +5,13 @@ const express = require('express');
 // Start up an instance of app
 const app = express();
 
+// Setup Server
+//const http = require("http");
+//const hostname = "localhost";
+const port = 8000;
+const server = app.listen(port,listening)
+
+
 /* Middleware*/
 //Here we are configuring express to use body-parser as middle-ware.
 var bodyParser = require('body-parser');
@@ -24,19 +31,10 @@ app.use(function(req, res, next) {
 });
 
 
-// Setup Server
-const http = require("http");
-//const hostname = "localhost";
-const port = 8000;
-
-const requestListener = function (req, res) {
-  res.writeHead(200);
-  res.end("My first server!");
-};
-const server = http.createServer(requestListener);
-server.listen(port, () => {
-    console.log(`Server is running on http://:${port}`);
-});
+//create a server object:
+//const server = http.createServer(function (req, res) {
+//  res.end(); //end the response
+//}).listen(port , listening); //the server object listens on port 8080
 //const server = http.createServer((req, res) => {
 //   res.end('Hello from server.js');
 //});
@@ -47,19 +45,18 @@ function listening(){
    console.log(`Server running at port :${port}`);
 }
 // CORS (Cross-Origin Resource Sharing) headers to support Cross-site HTTP requests
-app.get('/', function(req, res, next) {
-  // Handle the get for this route
-});
+app.get('/all', GetData);
+function GetData(req,res){
+  res.send(projectData);
+  console.log(projectData);
+}
 
 app.post('/', function(req, res, next) {
  // Handle the post for this route
 });
- app.post('/addUserComment',function(req,res){
-  console.log("hello from post");
- });
+ app.post('/addUserComment',showAllInfo);
 
  function showAllInfo(req,res){
-   console.log(req.body);
    
    projectData.city = req.body.City ;
    projectData.temp = req.body.temp ;
